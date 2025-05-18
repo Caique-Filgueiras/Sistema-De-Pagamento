@@ -10,12 +10,12 @@ O Sistema de Pagamentos Online foi desenvolvido com o objetivo de permitir a rea
   - HTML5
   - CSS3
   - JavaScript
-  - Bootstrap (para facilitar a estilização)
+  - Bootstrap
 
 - **Backend**:
   - Node.js
   - Express.js
-  - MongoDB (para armazenar informações de pagamentos)
+  - SQLite (para armazenar informações de pagamentos)
 
 - **Outras Ferramentas**:
   - Git e GitHub (para controle de versão e hospedagem do código)
@@ -23,7 +23,9 @@ O Sistema de Pagamentos Online foi desenvolvido com o objetivo de permitir a rea
 
 ## Colaboradores
 
-- **Caique Dos Santos Filgueiras** - Desenvolvedor principal
+- **Caique Dos Santos Filgueiras**
+- **Cauã Vieira Almeida**
+- **Nikolas Isler da Costa** 
 
 ## Como Rodar o Projeto
 
@@ -41,13 +43,8 @@ Após clonar o repositório, entre na pasta do projeto e instale as dependência
 cd Sistema-De-Pagamento
 npm install
 
-### Passo 3: Configurar o Banco de Dados (MongoDB)
-Este projeto utiliza o MongoDB como banco de dados. Para rodar localmente, você pode instalar o MongoDB em sua máquina ou usar um serviço como MongoDB Atlas (para um banco de dados na nuvem).
-
-MongoDB Local
-Se você estiver rodando o MongoDB localmente, inicie o servidor Mongo com o seguinte comando:
-
-mongod
+### Passo 3: Banco de Dados
+Este projeto utiliza o SQLite como banco de dados. P
 
 ### Passo 4️: Rodar o Projeto
 
@@ -55,7 +52,7 @@ npm start
 
 ### Passo 5: Acessar o Sistema
 
-Node server.js
+Por padrão, o projeto roda na rota 3000
 http://localhost:3000
 
 

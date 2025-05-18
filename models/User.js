@@ -1,25 +1,34 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+import { DataTypes } from 'sequelize';
+import { compare, genSalt, hash } from 'bcryptjs';
+import sequelize from '../database/config.js';
 
-const userSchema = new mongoose.Schema({
-  nome: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  senha: { type: String, required: true },
-});
-
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('senha')) return next();
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.senha = await bcrypt.hash(this.senha, salt);
-    next();
-  } catch (err) {
-    next(err);
+const User = sequelize.define('User', {
+  nome: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  senha: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
+}, {
+  hooks: {
+    beforeSave: async (user, options) => {
+      if (user.changed('senha')) {
+        const salt = await genSalt(10);
+        user.senha = await hash(user.senha, salt);
+      }
+    }
   }
 });
 
-userSchema.methods.compararSenha = async function(senha) {
-  return bcrypt.compare(senha, this.senha);
+User.prototype.compararSenha = function (senha) {
+  return compare(senha, this.senha);
 };
 
-module.exports = mongoose.model('User', userSchema);
+export default User;

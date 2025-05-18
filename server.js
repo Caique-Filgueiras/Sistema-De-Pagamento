@@ -1,43 +1,43 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+import express from 'express';
+import bodyParser from 'body-parser';
+import sequelize from './database/config.js';
+import authRoutes from './routes/auth.js';
+import paymentRoutes from './routes/payment.js';
+
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
-app.use(express.static('public')); // Serve arquivos estáticos, como o index.html
+app.use(express.static('public'));
 
-// Conexão com o MongoDB
-mongoose.connect('mongodb://localhost:27017/sistema_pagamento', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => console.log('Conectado ao MongoDB'))
-  .catch(err => console.log('Erro ao conectar ao MongoDB:', err));
+app.use('/api/auth', authRoutes);
+app.use('/api/payment', paymentRoutes);
 
-// Model de Pagamento
-const pagamentoSchema = new mongoose.Schema({
-  tipo: String,
-  dados: Object
-});
-
-const Pagamento = mongoose.model('Pagamento', pagamentoSchema);
-
-// Rota para processar pagamento
-app.post('/api/pagamento', (req, res) => {
-  const { tipo, dados } = req.body;
-
-  if (!tipo || !dados) {
-    return res.status(400).send({ message: 'Dados inválidos.' });
+async function conectarComRetry(tentativas = 10, delay = 1000) {
+  for (let i = 1; i <= tentativas; i++) {
+    try {
+      await sequelize.authenticate();
+      console.log(`Conectado ao banco na tentativa ${i}`);
+      return true;
+    } catch (err) {
+      console.warn(`Tentativa ${i} falhou: ${err.message}`);
+      if (i < tentativas) {
+        await new Promise(resolve => setTimeout(resolve, delay * i));
+      } else {
+        console.error('Não foi possível conectar ao banco após várias tentativas.');
+        return false;
+      }
+    }
   }
+}
 
-  const novoPagamento = new Pagamento({ tipo, dados });
-
-  novoPagamento.save()
-    .then(() => res.status(201).send({ message: 'Pagamento realizado com sucesso!' }))
-    .catch(err => res.status(500).send({ message: 'Erro ao processar o pagamento.', error: err }));
-});
-
-// Iniciar o servidor
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
-});
+(async () => {
+  const conectado = await conectarComRetry();
+  if (conectado) {
+    app.listen(port, () => {
+      console.log(`Servidor rodando na porta ${port}`);
+    });
+  } else {
+    process.exit(1);
+  }
+})();
