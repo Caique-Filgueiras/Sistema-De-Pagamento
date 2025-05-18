@@ -1,0 +1,93 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 50px;
+  color: #333;
+}
+
+h2 {
+  color: #333;
+  text-align: center;
+  margin-top: 50px;
+}
+
+form {
+  background-color: #fff;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Estilo para os formulários de pagamento */
+.form-container {
+  display: none;
+}
+
+.active-form {
+  display: block;
+}
+
+/* Estilo para as mensagens */
+.success-message {
+  background-color: #28a745;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
+  border-radius: 8px;
+}
+
+/* Estilo para os tipos de pagamento */
+.payment-option label {
+  margin-right: 10px;
+}
+
+.payment-option input[type="radio"] {
+  margin-right: 5px;
+}
